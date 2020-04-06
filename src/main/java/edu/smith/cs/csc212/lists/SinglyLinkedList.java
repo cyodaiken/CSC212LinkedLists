@@ -21,7 +21,9 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override
 	public T removeFront() {
 		checkNotEmpty();
-		throw new TODOErr();
+		T value = this.start.value;
+		this.start = this.start.next;
+		return value;
 	}
 
 	@Override
@@ -41,7 +43,17 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 
 	@Override
 	public void addBack(T item) {
-		throw new TODOErr();
+		if (this.start == null) {
+			addFront(item);
+			return;
+		}
+		Node<T> last = null;
+		for (Node<T> current = this.start;
+				current != null; current = current.next) {
+			last = current;
+		}
+		assert(last.next == null);
+		last.next = new Node<T>(item, null);
 	}
 
 	@Override
@@ -52,13 +64,19 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override
 	public T getFront() {
 		checkNotEmpty();
-		throw new TODOErr();
+		return this.start.value;
 	}
 
 	@Override
 	public T getBack() {
 		checkNotEmpty();
-		throw new TODOErr();
+		Node<T> last = null;
+		for (Node<T> current = this.start;
+				current != null; current = current.next) {
+			last = current;
+		}
+		return last.value;
+		
 	}
 
 	@Override
@@ -76,7 +94,12 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override
 	public void setIndex(int index, T value) {
 		checkNotEmpty();
-		throw new TODOErr();
+		int at = 0;
+		for (Node<T> n = this.start; n != null; n = n.next) {
+			if (at++ == index) {
+				 Node(index, n.value);
+			}
+		}
 	}
 
 	@Override
