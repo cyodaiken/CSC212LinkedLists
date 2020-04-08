@@ -61,7 +61,7 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 		checkNotEmpty();
 		T value = this.start.value;
 
-		if (this.start.after == null) {
+		if (this.size() == 1) {
 			start = end = null;
 			return value;
 		}
@@ -81,7 +81,7 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 
 		T value = this.end.value;
 
-		if (this.end.before == null) {
+		if (this.size() == 1) {
 			start = end = null;
 			return value;
 		}

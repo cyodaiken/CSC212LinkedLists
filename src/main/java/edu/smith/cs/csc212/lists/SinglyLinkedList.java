@@ -31,7 +31,7 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	public T removeBack() {
 		this.checkNotEmpty();
 
-		if (this.start.next == null) { 
+		if (this.size() == 1) { 
 			T value = removeFront(); 
 			return value;
 		}
