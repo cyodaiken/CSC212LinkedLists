@@ -18,7 +18,7 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 	 * This is a reference to the last node in this list.
 	 */
 	Node<T> end;
-	
+
 	/**
 	 * A doubly-linked list starts empty.
 	 */
@@ -26,7 +26,7 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 		this.start = null;
 		this.end = null;
 	}
-	
+
 	/**
 	 * The node on any linked list should not be exposed.
 	 * Static means we don't need a "this" of DoublyLinkedList to make a node.
@@ -55,29 +55,84 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 			this.after = null;
 		}
 	}
-	
 
 	@Override
 	public T removeFront() {
 		checkNotEmpty();
-		throw new TODOErr();
+		T value = this.start.value;
+
+		if (this.start.after == null) {
+			start = end = null;
+			return value;
+		}
+
+		Node<T> beforeStart = this.start.before;
+
+		this.start = this.start.after;
+		this.start.before = beforeStart;
+		beforeStart = this.start;
+
+		return value;
 	}
 
 	@Override
 	public T removeBack() {
 		checkNotEmpty();
-		throw new TODOErr();
+
+		T value = this.end.value;
+
+		if (this.end.before == null) {
+			start = end = null;
+			return value;
+		}
+
+		Node<T> afterEnd = this.end.after;
+
+		this.end = this.end.before;
+		this.end.after = afterEnd;
+		afterEnd = this.end;
+
+		return value;
 	}
 
 	@Override
 	public T removeIndex(int index) {
 		checkNotEmpty();
-		throw new TODOErr();
+
+		if(index == 0) {
+			T remove = removeFront();
+			return remove;
+		}
+		int at = 0;
+		for (Node<T> n = this.start; n != null; n = n.after) {
+			if (at++ == index - 1) {
+
+				Node<T> subsequent = n.after;
+				Node<T> current = n;
+
+				if(subsequent.after == null) {	
+					removeBack();
+
+				} else {
+					n.after = n.after.after;
+					n.after.before = current;
+				}
+				return subsequent.value;
+			}
+		}
+		throw new BadIndexError(index);
 	}
 
 	@Override
 	public void addFront(T item) {
-		throw new TODOErr();
+		if (start == null) {
+			start = end = new Node<T>(item);	
+		} else {
+			Node<T> second = start;
+			start = new Node<T>(item);
+			start.after = second;
+			second.before = start;
+		}
 	}
 
 	@Override
@@ -94,36 +149,82 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 
 	@Override
 	public void addIndex(int index, T item) {
-		checkNotEmpty();
-		throw new TODOErr();
+
+		if(index == 0) {
+
+			addFront(item);
+			return;
+		}
+
+		int at = 0;
+		for (Node<T> n = this.start; n != null; n = n.after) {
+			if (at++ == index - 1) {
+
+				Node<T> subsequent = n.after;
+				Node<T> current = n;
+
+				if(subsequent == null) {
+
+					addBack(item);
+
+				} else {
+
+					n.after = new Node<T>(item); 
+					n.after.before = current;
+					n.after.after = subsequent; 
+					subsequent.before = n.after;
+				}
+				return;
+			}
+		}
+		throw new BadIndexError(index);
 	}
 
 	@Override
 	public T getFront() {
-		checkNotEmpty();
-		throw new TODOErr();
+
+		checkNotEmpty();	
+		return this.start.value;
 	}
 
 	@Override
 	public T getBack() {
 		checkNotEmpty();
-		throw new TODOErr();
+		return this.end.value;
 	}
-	
+
 	@Override
 	public T getIndex(int index) {
 		checkNotEmpty();
-		throw new TODOErr();
+		int at = 0;
+		for (Node<T> n = this.start; n != null; n = n.after) {
+			if (at++ == index) {
+				return n.value;
+			}
+		}
+		throw new BadIndexError(index);
 	}
-	
+
 	public void setIndex(int index, T value) {
 		checkNotEmpty();
-		throw new TODOErr();
+
+		int at = 0;
+		for (Node<T> n = this.start; n != null; n = n.after) {
+			if (at++ == index) {
+				n.value = value;
+				return;
+			}
+		}
+		throw new BadIndexError(index);
 	}
 
 	@Override
 	public int size() {
-		throw new TODOErr();
+		int count = 0;
+		for (Node<T> n = this.end; n != null; n = n.before) {
+			count++;
+		}
+		return count;
 	}
 
 	@Override
