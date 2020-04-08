@@ -31,7 +31,6 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	public T removeBack() {
 		this.checkNotEmpty();
 
-
 		if (this.start.next == null) { 
 			T value = removeFront(); 
 			return value;
@@ -53,30 +52,25 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override 
 	public T removeIndex(int index) { 
 		this.checkNotEmpty();
-		
-		System.out.println("INDEX: " + index);
-		
-		for (Node<T> n = this.start; n != null; n = n.next) {
-			System.out.println(n.value);
+
+		if (index == 0) { 
+			T value = removeFront(); 
+			return value;
 		}
-		System.out.println("NEW");
+
 		T remove = null;
 		int at = 0;
 		for (Node<T> n = this.start; n != null; n = n.next) {
-			
+
 			if (at++ == index -1 ) {
-				
+
 				remove = n.next.value; 
-				System.out.println("n: " + n.value);
-				n = n.next;
-				
-				for (Node<T> d = this.start; d != null; d = d.next) {
-					System.out.println(d.value);
-				}
-				System.out.println("REMOVE: " + remove);
+
+				n.next = n.next.next ;
+
 				return remove; 
 			} 
-			
+
 		}
 
 		throw new BadIndexError(index);
@@ -106,7 +100,7 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override
 	public void addIndex(int index, T item) {
 
-		if (this.start != null && index == 0) { 
+		if (index == 0) { 
 			addFront(item); 
 			return; 
 		}
