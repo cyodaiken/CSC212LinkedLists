@@ -386,6 +386,7 @@ public class SinglyLinkedListTest {
 
 	@Test
 	public void testSetIndexEasy() {
+	
 		ListADT<String> data = makeABCDList();
 		data.setIndex(0, "z");
 		assertEquals("z", data.getIndex(0));
